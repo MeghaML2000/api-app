@@ -155,6 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 '🟢 Average AQI is ${airIndex1 > airIndex2 ? airIndex2 : airIndex1}',
             body:
                 'Distance ${bestAirIndexLine == 0 ? _placeDistance : _placeDistance1}'));
+    await Future.delayed(const Duration(milliseconds: 500));
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 9,
+            channelKey: 'basic_channel',
+            title: (airIndex1 > airIndex2 ? airIndex2 : airIndex1) >= 100
+                ? 'Bad AQI please take some precautions and travel,'
+                : "Good AQI, safe to travel",
+            body: (airIndex1 > airIndex2 ? airIndex2 : airIndex1) >= 100
+                ? ' if you are a person with breathing issues travel along with your medicines'
+                : ""));
   }
 
   @override
