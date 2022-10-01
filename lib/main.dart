@@ -146,13 +146,25 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  getColorCircle() {
+    if ((airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 100) {
+      return "🔴";
+    } else if ((airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 80) {
+      return "🟠";
+    } else if ((airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 50) {
+      return "🟡";
+    } else {
+      return "🟢";
+    }
+  }
+
   Future<void> _showNotificationCustomSound() async {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 10,
             channelKey: 'basic_channel',
             title:
-                '🟢 Average AQI is ${airIndex1 > airIndex2 ? airIndex2 : airIndex1}',
+                '${getColorCircle()} Average AQI is ${airIndex1 > airIndex2 ? airIndex2 : airIndex1}',
             body:
                 'Distance ${bestAirIndexLine == 0 ? _placeDistance : _placeDistance1}'));
     await Future.delayed(const Duration(milliseconds: 500));
@@ -161,11 +173,19 @@ class _MyHomePageState extends State<MyHomePage> {
             id: 9,
             channelKey: 'basic_channel',
             title: (airIndex1 > airIndex2 ? airIndex2 : airIndex1) >= 100
-                ? 'Bad AQI please take some precautions and travel,'
-                : "Good AQI, safe to travel",
+                ? 'Very Bad AQI please take some precautions and travel'
+                : (airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 80
+                    ? "Bad AQI,"
+                    : (airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 50
+                        ? "Moderate AQI, "
+                        : "Good AQI, Safe to travel",
             body: (airIndex1 > airIndex2 ? airIndex2 : airIndex1) >= 100
-                ? ' if you are a person with breathing issues travel along with your medicines'
-                : ""));
+                ? 'Recommended to wait for sometime to get aqi better'
+                : (airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 80
+                    ? "Recommended to travel with safety measures."
+                    : (airIndex1 > airIndex2 ? airIndex2 : airIndex1) > 50
+                        ? "Recommended to travel with precautions for sensitive people"
+                        : ""));
   }
 
   @override
